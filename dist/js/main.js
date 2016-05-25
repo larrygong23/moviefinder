@@ -19725,17 +19725,16 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var AppActions = {
-	searchMovies: function(movie) {
-
+	searchMovies: function(movie){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.SEARCH_MOVIES,
 			movie: movie
 		});
 	},
-	receiveMovieResults: function(movies) {
+	receiveMovieResults: function(movies){
 		AppDispatcher.handleViewAction({
 			actionType: AppConstants.RECEIVE_MOVIE_RESULTS,
-			movie: movies
+			movies: movies
 		});
 	}
 }
@@ -19769,7 +19768,7 @@ var App = React.createClass({displayName: "App",
 	},
 
 	render: function(){
-		
+		console.log(this.state.movies);
 		if(this.state.movies == ''){
 			var movieResults = '';
 		} else {
@@ -19855,7 +19854,7 @@ var SearchForm = React.createClass({displayName: "SearchForm",
 	render: function(){
 		return(
 			React.createElement("div", {className: "search-form"}, 
-				React.createElement("h1", {className: "text-center"}, "Search For a Movie"), 
+				React.createElement("h1", {className: "text-center"}, "Search For A Movie"), 
 				React.createElement("form", {onSubmit: this.onSubmit}, 
 					React.createElement("div", {className: "form-group"}, 
 						React.createElement("input", {type: "text", className: "form-control", ref: "title", placeholder: "Enter a Movie Title..."})
@@ -19866,7 +19865,7 @@ var SearchForm = React.createClass({displayName: "SearchForm",
 		)
 	},
 
-	onSubmit: function(e) {
+	onSubmit: function(e){
 		e.preventDefault();
 
 		var movie = {
@@ -19876,7 +19875,6 @@ var SearchForm = React.createClass({displayName: "SearchForm",
 		AppActions.searchMovies(movie);
 	}
 });
-
 
 module.exports = SearchForm;
 
@@ -19891,7 +19889,7 @@ var Dispatcher = require('flux').Dispatcher;
 var assign = require('object-assign');
 
 var AppDispatcher = assign(new Dispatcher(), {
-	handleViewAction: function(action) {
+	handleViewAction: function(action){
 		var payload = {
 			source: 'VIEW_ACTION',
 			action: action
@@ -19907,7 +19905,6 @@ var App = require('./components/App');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AppAPI = require('./utils/appAPI.js');
-
 
 ReactDOM.render(
 	React.createElement(App, null),
@@ -19926,21 +19923,20 @@ var CHANGE_EVENT = 'change';
 var _movies = [];
 var _selected = '';
 
-
 var AppStore = assign({}, EventEmitter.prototype, {
-	setMoviesResults: function(movies){
+	setMovieResults: function(movies){
 		_movies = movies;
 	},
-	getMovieResults: function() {
+	getMovieResults: function(){
 		return _movies;
 	},
-	emitChange: function() {
+	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
-	addChangeListener: function(callback) {
+	addChangeListener: function(callback){
 		this.on('change', callback);
 	},
-	removeChangeListener: function(callback) {
+	removeChangeListener: function(callback){
 		this.removeListener('change', callback);
 	}
 });
@@ -19948,15 +19944,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(payload){
 	var action = payload.action;
 
-	switch(action.actionType) {
+	switch(action.actionType){
 		case AppConstants.SEARCH_MOVIES:
-			console.log('Searching for movie ' + action.movie.title);
+			console.log('Searching for movie '+ action.movie.title);
 			AppAPI.searchMovies(action.movie);
 			AppStore.emit(CHANGE_EVENT);
 			break;
-
 		case AppConstants.RECEIVE_MOVIE_RESULTS:
-			AppStore.setMoviesResults(action.movies);
+			AppStore.setMovieResults(action.movies);
 			AppStore.emit(CHANGE_EVENT);
 			break;
 	}
@@ -19970,15 +19965,15 @@ module.exports = AppStore;
 var AppActions = require('../actions/AppActions');
 
 module.exports = {
-	searchMovies: function(movie) {
+	searchMovies: function(movie){
 		$.ajax({
 			url: 'http://www.omdbapi.com/?s='+movie.title,
 			dataType: 'json',
 			cache: false,
-			success: function(data) {
+			success: function(data){
 				AppActions.receiveMovieResults(data.Search);
 			}.bind(this),
-			error: function(xhr, status, err) {
+			error: function(xhr, status, err){
 				alert(err);
 			}.bind(this)
 		});

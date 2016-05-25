@@ -6,7 +6,7 @@ var SearchForm = React.createClass({
 	render: function(){
 		return(
 			<div className="search-form">
-				<h1 className="text-center">Search For a Movie</h1>
+				<h1 className="text-center">Search For A Movie</h1>
 				<form onSubmit={this.onSubmit}>
 					<div className="form-group">
 						<input type="text" className="form-control" ref="title" placeholder="Enter a Movie Title..." />
@@ -17,7 +17,7 @@ var SearchForm = React.createClass({
 		)
 	},
 
-	onSubmit: function(e) {
+	onSubmit: function(e){
 		e.preventDefault();
 
 		var movie = {
@@ -27,6 +27,5 @@ var SearchForm = React.createClass({
 		AppActions.searchMovies(movie);
 	}
 });
-
 
 module.exports = SearchForm;

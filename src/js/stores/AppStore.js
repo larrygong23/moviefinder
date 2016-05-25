@@ -9,21 +9,20 @@ var CHANGE_EVENT = 'change';
 var _movies = [];
 var _selected = '';
 
-
 var AppStore = assign({}, EventEmitter.prototype, {
-	setMoviesResults: function(movies){
+	setMovieResults: function(movies){
 		_movies = movies;
 	},
-	getMovieResults: function() {
+	getMovieResults: function(){
 		return _movies;
 	},
-	emitChange: function() {
+	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
-	addChangeListener: function(callback) {
+	addChangeListener: function(callback){
 		this.on('change', callback);
 	},
-	removeChangeListener: function(callback) {
+	removeChangeListener: function(callback){
 		this.removeListener('change', callback);
 	}
 });
@@ -31,15 +30,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(payload){
 	var action = payload.action;
 
-	switch(action.actionType) {
+	switch(action.actionType){
 		case AppConstants.SEARCH_MOVIES:
-			console.log('Searching for movie ' + action.movie.title);
+			console.log('Searching for movie '+ action.movie.title);
 			AppAPI.searchMovies(action.movie);
 			AppStore.emit(CHANGE_EVENT);
 			break;
-
 		case AppConstants.RECEIVE_MOVIE_RESULTS:
-			AppStore.setMoviesResults(action.movies);
+			AppStore.setMovieResults(action.movies);
 			AppStore.emit(CHANGE_EVENT);
 			break;
 	}
